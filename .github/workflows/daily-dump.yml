@@ -29,3 +29,7 @@ jobs:
           repository: languagetooler-gmbh/languagetool-premium-modules
           path: repos/languagetool-premium-modules
           token: ${{ secrets.LT_PREMIUM_TOKEN }}
+
+      - name: Run dump script
+        run: |
+          python ./scripts/dump-all.py './repos'
