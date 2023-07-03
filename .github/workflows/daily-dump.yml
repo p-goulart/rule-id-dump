@@ -19,4 +19,4 @@ jobs:
         with:
           repository: languagetool-org/languagetool
           path: repos
-          token: env.LT_OS_TOKEN
+          token: ${{ secrets.LT_OS_TOKEN }}
