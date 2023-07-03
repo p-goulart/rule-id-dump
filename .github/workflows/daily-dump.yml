@@ -1,0 +1,22 @@
+name: Daily rule ID dump
+
+on:
+  push
+  # schedule:
+  #   - cron: '0 3 * * *'
+
+jobs:
+  run_dump:
+    runs_on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Set up Python 3.7"
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.7"
+      - name: 'Checkout LT OS repo'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetool-org/languagetool
+          path: repos
+          token: env.LT_OS_TOKEN
