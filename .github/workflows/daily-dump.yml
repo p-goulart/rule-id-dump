@@ -1,0 +1,40 @@
+name: Daily rule ID dump
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  run_dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Set up Python 3.7"
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.7"
+
+      - name: 'Checkout LT OS repo'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetool-org/languagetool
+          path: repos/languagetool
+          token: ${{ secrets.LT_OS_TOKEN }}
+
+      - name: 'Checkout LT Premium repo'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetooler-gmbh/languagetool-premium-modules
+          path: repos/languagetool-premium-modules
+          token: ${{ secrets.LT_PREMIUM_TOKEN }}
+
+      - name: Run dump script
+        run: |
+          python ./scripts/dump-all.py './repos'
+
+      - name: Archive artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: rule-dump
+          path: lt-rule-dump-out/*.txt
