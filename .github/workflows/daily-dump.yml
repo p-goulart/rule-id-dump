@@ -33,3 +33,9 @@ jobs:
       - name: Run dump script
         run: |
           python ./scripts/dump-all.py './repos'
+
+      - name: Archive artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: rule-dump
+          path: lt-rule-dump-out/*.txt
