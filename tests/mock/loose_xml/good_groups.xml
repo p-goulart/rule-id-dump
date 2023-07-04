@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../print.xsl" title="Pretty print" ?>
+<?xml-stylesheet type="text/css" href="../rules.css" title="Easy editing stylesheet" ?>
+
+<rules lang="pt-BR" xsi:noNamespaceSchemaLocation="../../../../../../../../../../languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <category id="BR_SPELLING" name="ortografia brasileira" type="misspelling">
+    <rulegroup id="foo" name="bar">
+      <rule>
+      <pattern>
+        <token regexp='yes'>foo|bar</token>
+        <token min='0' postag='A.+' postag_regexp='yes'/>
+        <token regexp='yes'>premios?</token>
+      </pattern>
+      <message>Esta palavra é um verbo. Se pretende referir-se a um nome ou adjetivo, deve utilizar a forma acentuada.</message>
+      <suggestion><match no='1' include_skipped='all'/> <match no='2' include_skipped='all'/> prêmio<match no='3' regexp_match='.+?(s?)$' regexp_replace='$1'/></suggestion>
+      <url>https://pt.wiktionary.org/wiki/prémio</url>
+      <example correction='no prêmio'><marker>no premio</marker>.</example>
+      <example correction='nos prêmios'><marker>nos premios</marker>.</example>
+    </rule>
+    <rule>
+      <pattern>
+        <token regexp='yes' inflected="yes">dever|poder|querer|costumar</token>
+        <marker>
+          <token regexp='yes'>premios?</token>
+        </marker>
+      </pattern>
+      <message>Esta palavra é um verbo. Se pretende referir-se a um nome ou adjetivo, deve utilizar a forma acentuada.</message>
+      <suggestion>prêmio<match no='2' regexp_match='.+?(s?)$' regexp_replace='$1'/></suggestion>
+      <url>https://pt.wiktionary.org/wiki/prémio</url>
+      <example correction='prêmio'>E tem <marker>premio</marker> para todos.</example>
+      <example correction='prêmios'>E tem <marker>premios</marker> para todos.</example>
+    </rule>
+    <rule>
+      <pattern>
+        <token postag="VMIS1P0P" regexp="yes">.*ámos</token>
+      </pattern>
+      <message>Em português do Brasil, se escreve sem acento.</message>
+      <suggestion><match no="1" postag="VMIS1P0P" postag_regexp="yes" postag_replace="VMIS1P0"/></suggestion>
+      <example correction="provamos"><marker>provámos</marker></example>
+    </rule>
+    </rulegroup>
+  </category>
+</rules>

@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as XMLTree
 from os import path
-from rule import Rule
+from elements import Rule, RuleGroup, Category
 
 
 class RuleFile:
@@ -19,12 +19,25 @@ class RuleFile:
         return path.basename(self.filepath)
 
     @property
+    def categories(self):
+        return [Category(node) for node in self.tree.findall('./category')]
+
+    @property
+    def rulegroups(self):
+        return [RuleGroup(node) for node in self.tree.findall('./rulegroup')] + \
+            [rg for rglist in [cat.rulegroups for cat in self.categories] for rg in rglist]
+
+    # Extract rules from everything it can
+    @property
     def rules(self):
-        return [Rule(node) for node in self.tree.findall('.//rule[@id]') + self.tree.findall('.//rulegroup[@id]')]
+        return [Rule(node) for node in self.tree.findall('./rule')] + \
+            [r for rlist in [rulegroup.rules for rulegroup in self.rulegroups] for r in rlist] + \
+            [r for rlist in [category.rules for category in self.categories] for r in rlist]
 
     @property
     def ids(self):
-        return [r.id for r in self.rules]
+        id_nodes = self.tree.findall('.//rule[@id]') + self.tree.findall('.//rulegroup[@id]')
+        return [node.attrib['id'] for node in id_nodes]
 
     @property
     def type(self):
