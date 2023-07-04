@@ -1,4 +1,4 @@
-from scripts.lib.elements import Rule, RuleGroup, Category
+from scripts.lib.elements import Rule, RuleGroup
 import xml.etree.ElementTree as XMLTree
 import unittest
 
