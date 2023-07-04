@@ -25,3 +25,11 @@ class RuleFile:
     @property
     def ids(self):
         return [r.id for r in self.rules]
+
+    @property
+    def type(self):
+        if self.name.contains('grammar'):
+            return 'grammar'
+        if self.name.contains('style'):
+            return 'style'
+        return 'unknown'
