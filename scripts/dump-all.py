@@ -13,7 +13,7 @@ class CLI:
         )
         self.parser.add_argument('base_path')
         self.parser.add_argument('-v', '--verbosity', default='INFO')
-        self.parser.add_argument('-o', '--out_dir', default='lt-rule-dump-out')
+        self.parser.add_argument('-o', '--out-dir', default='lt-rule-dump-out')
         self.args = self.parser.parse_args()
         os.makedirs(self.args.out_dir, exist_ok=True)
 

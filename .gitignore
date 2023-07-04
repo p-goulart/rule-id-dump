@@ -1,6 +1,12 @@
 .idea
 **/lt-rule-dump-out
+**/lt-comparison-out
 *.egg-info/
 *pycache__/
 tags
 rule-id-dump_env/
+repos/
+repos-latest/
+repos-quarter-start/
+added-rules/
+rule-dump-latest/
