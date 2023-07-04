@@ -1,8 +1,8 @@
 name: Daily rule ID dump
 
-on:
-  schedule:
-    - cron: '0 3 * * *'
+on: push
+  # schedule:
+    # - cron: '0 3 * * *'
 
 jobs:
   run_dump:
@@ -19,22 +19,48 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: languagetool-org/languagetool
-          path: repos/languagetool
+          path: repos-latest/languagetool
           token: ${{ secrets.LT_OS_TOKEN }}
 
       - name: 'Checkout LT Premium repo'
         uses: actions/checkout@v3
         with:
           repository: languagetooler-gmbh/languagetool-premium-modules
-          path: repos/languagetool-premium-modules
+          path: repos-latest/languagetool-premium-modules
           token: ${{ secrets.LT_PREMIUM_TOKEN }}
 
-      - name: Run dump script
-        run: |
-          python ./scripts/dump-all.py './repos'
+      - name: 'Checkout LT OS repo (start of quarter)'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetool-org/languagetool
+          path: repos-quarter-start/languagetool
+          token: ${{ secrets.LT_OS_TOKEN }}
+          ref: ${{ vars.QUARTER_TAG }}
 
-      - name: Archive artefacts
+      - name: 'Checkout LT Premium repo (start of quarter)'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetooler-gmbh/languagetool-premium-modules
+          path: repos-quarter-start/languagetool-premium-modules
+          token: ${{ secrets.LT_PREMIUM_TOKEN }}
+          ref: ${{ vars.QUARTER_TAG }}
+
+      - name: Run dump script on latest data
+        run: |
+          python ./scripts/dump-all.py './repos-latest' --out-dir 'rule-dump-latest'
+
+      - name: Compare repo states
+        run: |
+          python ./scripts/compare.py --from-dir 'repos-quarter-start' --to-dir 'repos-latest' --out-dir 'added-rules'
+
+      - name: Archive dump artefacts
         uses: actions/upload-artifact@v3
         with:
-          name: rule-dump
-          path: lt-rule-dump-out/*.txt
+          name: rule-dump-latest
+          path: rule-dump-latest/
+
+      - name: Archive comparison artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: added-rules
+          path: added-rules/

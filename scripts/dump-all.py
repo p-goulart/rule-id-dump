@@ -20,13 +20,15 @@ class CLI:
 
 def __main__():
     cli = CLI()
-    logger = logger_wrapper('lt-rule-id-dump', cli.args.verbosity)
+    logger = logger_wrapper(cli.parser.prog, cli.args.verbosity)
     logger.debug(f"Starting script...\nInvoked with options: {cli.args}")
-    for repo_name, repo_dir in REPOS.items():
-        for locale in LOCALES:
-            out_filename = f"{repo_name}_{locale}.txt"
+    for locale in LOCALES:
+        out_dir = path.join(cli.args.out_dir, locale)
+        os.makedirs(out_dir, exist_ok=True)
+        for repo_name, repo_dir in REPOS.items():
+            out_filename = f"{repo_name}.txt"
             repo_path = path.join(cli.args.base_path, repo_dir)
-            out_path = path.join(cli.args.out_dir, out_filename)
+            out_path = path.join(out_dir, out_filename)
             logger.debug(f"Printing rule IDs for {out_filename}")
             dump = RuleDump(repo_path, locale)
             out_file = open(out_path, 'w')
