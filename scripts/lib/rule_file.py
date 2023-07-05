@@ -6,9 +6,10 @@ from elements import Rule, RuleGroup, Category
 class RuleFile:
     # Constructor takes as param only filepath, and derives from it a parsed XML tree
     # and a list of Rule instances.
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str, rules_path: str):
         self.filepath = filepath
         self.tree = self.parse_xml()
+        self.rel_path = path.relpath(self.filepath, rules_path)
 
     # Parse XML from path, return parsed element tree.
     def parse_xml(self):
@@ -41,8 +42,9 @@ class RuleFile:
 
     @property
     def type(self):
-        if self.name.contains('grammar'):
+        # lol python is goofy sometimes
+        if 'grammar' in self.name:
             return 'grammar'
-        if self.name.contains('style'):
+        if 'style' in self.name:
             return 'style'
         return 'unknown'

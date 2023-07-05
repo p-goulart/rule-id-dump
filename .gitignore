@@ -1,6 +1,7 @@
 .idea
 **/lt-rule-dump-out
 **/lt-comparison-out
+**/lt-master-csv
 *.egg-info/
 *pycache__/
 tags

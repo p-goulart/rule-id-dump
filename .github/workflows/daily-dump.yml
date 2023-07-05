@@ -1,11 +1,11 @@
-name: Daily rule ID dump
+name: XML Rule Statistics
 
 on:
   schedule:
     - cron: '0 3 * * *'
 
 jobs:
-  run_dump:
+  compile-stats:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -45,13 +45,20 @@ jobs:
           token: ${{ secrets.LT_PREMIUM_TOKEN }}
           ref: ${{ vars.QUARTER_TAG }}
 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: Run dump script on latest data
         run: |
-          python ./scripts/dump-all.py './repos-latest' --out-dir 'rule-dump-latest'
+          python ./scripts/dump_all.py './repos-latest' --out-dir 'rule-dump-latest'
 
       - name: Compare repo states
         run: |
           python ./scripts/compare.py --from-dir 'repos-quarter-start' --to-dir 'repos-latest' --out-dir 'added-rules'
+
+      - name: Generate master CSV
+        run: |
+          python ./scripts/master_csv.py './repos-latest' --out-dir 'master-csv'
 
       - name: Archive dump artefacts
         uses: actions/upload-artifact@v3
@@ -64,3 +71,9 @@ jobs:
         with:
           name: added-rules
           path: added-rules/
+
+      - name: Archive master CSV
+        uses: actions/upload-artifact@v3
+        with:
+          name: all_rules
+          path: master-csv/all_rules.csv
