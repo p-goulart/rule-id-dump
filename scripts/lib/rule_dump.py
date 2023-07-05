@@ -1,6 +1,7 @@
 from glob import glob
 from constants import *
 from rule_file import RuleFile
+from typing import List
 
 
 class RuleDump:

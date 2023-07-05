@@ -23,7 +23,7 @@ class CLI:
 # id
 # locale
 # source repo
-# source file <<<< IMPROVE THIS!
+# source file
 # tone_tags
 # is_goal_specific
 def __main__():
@@ -45,6 +45,7 @@ def __main__():
                         rule.is_goal_specific
                     ])
     df = DataFrame(rows, columns=headers)
+    print(df.describe())
     out_file = open(out_path, 'w')
     out_file.write(df.to_csv())
 
