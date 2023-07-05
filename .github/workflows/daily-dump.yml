@@ -1,11 +1,11 @@
-name: Daily rule ID dump
+name: XML Rule Statistics
 
-on: push
-  # schedule:
-  #   - cron: '0 3 * * *'
+on:
+  schedule:
+    - cron: '0 3 * * *'
 
 jobs:
-  run_dump:
+  compile-stats:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
