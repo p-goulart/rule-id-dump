@@ -42,8 +42,9 @@ class RuleFile:
 
     @property
     def type(self):
-        if self.name.contains('grammar'):
+        # lol python is goofy sometimes
+        if 'grammar' in self.name:
             return 'grammar'
-        if self.name.contains('style'):
+        if 'style' in self.name:
             return 'style'
         return 'unknown'

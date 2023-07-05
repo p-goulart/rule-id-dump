@@ -31,7 +31,7 @@ def __main__():
     logger = logger_wrapper(cli.parser.prog, cli.args.verbosity)
     logger.debug(f"Starting script...\nInvoked with options: {cli.args}")
     out_path = path.join(cli.args.out_dir, 'all_rules.csv')
-    headers = ['id', 'locale', 'source_repo', 'source_file', 'tone_tags', 'is_goal_specific']
+    headers = ['id', 'locale', 'source_repo', 'type', 'source_file', 'tone_tags', 'is_goal_specific']
     rows = []
     for locale in LOCALES:
         for repo_name, repo_dir in REPOS.items():
@@ -40,12 +40,12 @@ def __main__():
             for file in dump.files:
                 for rule in file.rules:
                     rows.append([
-                        rule.id, locale, repo_name, file.rel_path,
+                        rule.id, locale, repo_name, file.type, file.rel_path,
                         ','.join([tt.tag for tt in rule.tone_tags]),
                         rule.is_goal_specific
                     ])
     df = DataFrame(rows, columns=headers)
-    print(df.describe())
+    logger.info(df.describe())
     out_file = open(out_path, 'w')
     out_file.write(df.to_csv())
 
