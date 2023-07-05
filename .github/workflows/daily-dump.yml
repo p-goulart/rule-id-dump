@@ -47,7 +47,7 @@ jobs:
 
       - name: Run dump script on latest data
         run: |
-          python ./scripts/dump-all.py './repos-latest' --out-dir 'rule-dump-latest'
+          python ./scripts/dump_all.py './repos-latest' --out-dir 'rule-dump-latest'
 
       - name: Compare repo states
         run: |
