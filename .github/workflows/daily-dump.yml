@@ -1,9 +1,8 @@
 name: Daily rule ID dump
 
-on:
-  push
-  schedule:
-    - cron: '0 3 * * *'
+on: push
+  # schedule:
+  #   - cron: '0 3 * * *'
 
 jobs:
   run_dump:
