@@ -45,6 +45,9 @@ jobs:
           token: ${{ secrets.LT_PREMIUM_TOKEN }}
           ref: ${{ vars.QUARTER_TAG }}
 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: Run dump script on latest data
         run: |
           python ./scripts/dump_all.py './repos-latest' --out-dir 'rule-dump-latest'
