@@ -13,12 +13,18 @@ class TestToneTags(unittest.TestCase):
     def test_tone_tag_from_rule(self):
         rule = mock_rule('<rule id="foo" tone_tags="professional formal"/>')
         self.assertEquals(len(rule.tone_tags), 2)
-        self.assertEquals(rule.tone_tags[0].tag, 'professional')
+        self.assertEquals(set([t.tag for t in rule.tone_tags]),
+                          {'professional', 'formal'})
 
     def test_tone_tag_inheritance(self):
         rule = mock_rule('<rule id="foo" tone_tags="professional formal"/>',
                          {'tone_tags': 'academic potato'})
         self.assertEquals(len(rule.tone_tags), 4)
+
+    def test_tone_tag_inheritance_repeated(self):
+        rule = mock_rule('<rule id="foo" tone_tags="formal"/>',
+                         {'tone_tags': 'formal'})
+        self.assertEquals(len(rule.tone_tags), 1)
 
 
 if __name__ == '__main__':

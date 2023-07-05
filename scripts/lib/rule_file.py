@@ -6,9 +6,10 @@ from elements import Rule, RuleGroup, Category
 class RuleFile:
     # Constructor takes as param only filepath, and derives from it a parsed XML tree
     # and a list of Rule instances.
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str, rules_path: str):
         self.filepath = filepath
         self.tree = self.parse_xml()
+        self.rel_path = path.relpath(self.filepath, rules_path)
 
     # Parse XML from path, return parsed element tree.
     def parse_xml(self):

@@ -41,18 +41,26 @@ class Element:
         except KeyError:
             return None
 
+    @property
+    def is_goal_specific(self):
+        try:
+            return self.attrib['is_goal_specific']
+        except KeyError:
+            return 'false'
+
     # This is stupid, but whatever, it works.
     @staticmethod
     def combine_tone_tags(attrib, parent_attrib) -> List[ToneTag]:
+        tt = []
         try:
-            child_tt = ToneTag.list_from_str(attrib['tone_tags'])
+            tt = tt + attrib['tone_tags'].split(' ')
         except KeyError:
-            child_tt: List[ToneTag] = []
+            pass
         try:
-            parent_tt = ToneTag.list_from_str(parent_attrib['tone_tags'])
+            tt = tt + parent_attrib['tone_tags'].split(' ')
         except KeyError:
-            parent_tt: List[ToneTag] = []
-        return child_tt + parent_tt
+            pass
+        return [ToneTag(t) for t in list(set(tt))]
 
 
 class Category(Element):
