@@ -23,6 +23,7 @@ class CLI:
 # id
 # locale
 # source repo
+# type (grammar, style, unknown)
 # source file
 # tone_tags
 # is_goal_specific
