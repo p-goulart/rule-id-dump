@@ -1,6 +1,7 @@
 name: Daily rule ID dump
 
 on:
+  push
   schedule:
     - cron: '0 3 * * *'
 
@@ -53,6 +54,10 @@ jobs:
         run: |
           python ./scripts/compare.py --from-dir 'repos-quarter-start' --to-dir 'repos-latest' --out-dir 'added-rules'
 
+      - name: Generate master CSV
+        run: |
+          python ./scripts/master_csv.py './repos-latest' --out-dir 'master-csv'
+
       - name: Archive dump artefacts
         uses: actions/upload-artifact@v3
         with:
@@ -64,3 +69,9 @@ jobs:
         with:
           name: added-rules
           path: added-rules/
+
+      - name: Archive master CSV
+        uses: actions/upload-artifact@v3
+        with:
+          name: all_rules
+          path: all_rules.csv
