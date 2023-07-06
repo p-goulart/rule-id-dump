@@ -2,6 +2,7 @@
 **/lt-rule-dump-out
 **/lt-comparison-out
 **/lt-master-csv
+**/lt-style-out
 *.egg-info/
 *pycache__/
 tags
