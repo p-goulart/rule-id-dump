@@ -2,7 +2,7 @@
 [![Flake8](https://github.com/p-goulart/rule-id-dump/actions/workflows/flake8.yml/badge.svg)](https://github.com/p-goulart/rule-id-dump/actions/workflows/flake8.yml)
 
 # Rule Creation Stats
-This project contains a bunch of scripts used to dump rule IDs, count them, diff them, etc.\
+This project contains a bunch of scripts used to dump rule IDs, count them, diff them, etc.
 
 ## Schedule
 All of the scripts listed here are set to run at 3AM every weekday.
