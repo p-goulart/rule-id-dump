@@ -1,6 +1,5 @@
-#import xml.etree.ElementTree as XMLTree
-from lxml import etree as XMLTree
 from os import path
+from lxml import etree
 from elements import Rule, RuleGroup, Category
 
 
@@ -14,7 +13,7 @@ class RuleFile:
 
     # Parse XML from path, return parsed element tree.
     def parse_xml(self):
-        return XMLTree.parse(self.filepath)
+        return etree.parse(self.filepath)
 
     @property
     def name(self):

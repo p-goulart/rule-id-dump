@@ -1,7 +1,7 @@
 from os import path
 import pathlib
 from scripts.lib.elements import Rule
-import xml.etree.ElementTree as XMLTree
+from lxml import etree
 
 
 def mock_path(*parts):
@@ -9,4 +9,4 @@ def mock_path(*parts):
 
 
 def mock_rule(xml_str: str, parent_attrib=None):
-    return Rule(XMLTree.fromstring(xml_str), parent_attrib)
+    return Rule(etree.fromstring(xml_str), parent_attrib)
