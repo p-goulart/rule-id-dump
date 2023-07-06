@@ -97,7 +97,7 @@ ABSAGE_SUBST
 
 ### `master_csv`
 
-This script is meant to provide an all-encompassing view of **all** rules created by the lingu team in **one single file** – this means *all locales** are present in the same file. For example:
+This script is meant to provide an all-encompassing view of **all** rules created by the lingu team in **one single file** – this means *all locales* are present in the same file. For example:
 
 ```csv
 row,id,locale,source_repo,type,source_file,tone_tags,is_goal_specific
