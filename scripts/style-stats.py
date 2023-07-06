@@ -71,8 +71,12 @@ def __main__():
             df_from_repo(cli.args.from_dir, repo_dir, repo_name, locale, rows_from)
         df_to = DataFrame(rows_to, columns=headers)
         df_from = DataFrame(rows_from, columns=headers)
-        open(summary_filepath, 'w').write(df_to.groupby(by='repo')['tone_tags'].value_counts().to_string())
-        open(added_filepath, 'w').write(compare_dfs(df_to, df_from))
+        summary = df_to.groupby(by='repo')['tone_tags'].value_counts().to_string()
+        logger.debug(summary)
+        open(summary_filepath, 'w').write(summary)
+        comparison = compare_dfs(df_to, df_from)
+        logger.debug(comparison)
+        open(added_filepath, 'w').write(comparison)
 
 
 __main__()
