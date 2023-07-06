@@ -41,7 +41,7 @@ def __main__():
             for file in dump.files:
                 for rule in file.rules:
                     rows.append([
-                        rule.id, rule.subId, locale, repo_name, file.type, file.rel_path,
+                        rule.id, rule.sub_id, locale, repo_name, file.type, file.rel_path,
                         ','.join([tt.tag for tt in rule.tone_tags]),
                         rule.is_goal_specific
                     ])
