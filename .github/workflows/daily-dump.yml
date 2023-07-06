@@ -63,7 +63,7 @@ jobs:
 
       - name: Compile style stats
         run: |
-          python ./scripts/style-stats.py --from-dir 'repos-quarter-start' --to-dir 'repos-latest' --out-dir 'style-stats'
+          python ./scripts/style_stats.py --from-dir 'repos-quarter-start' --to-dir 'repos-latest' --out-dir 'style-stats'
 
       - name: Archive dump artefacts
         uses: actions/upload-artifact@v3
