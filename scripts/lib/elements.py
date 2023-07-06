@@ -42,6 +42,14 @@ class Element:
             return None
 
     @property
+    def subId(self):
+       if self.xml_node.tag == "rule":
+           if self.xml_node.getparent().tag == "rulegroup":
+             return str(len(self.xml_node.xpath("preceding-sibling::rule")) + 1)
+           else:
+             return "1"
+
+    @property
     def is_goal_specific(self):
         try:
             return self.attrib['is_goal_specific']

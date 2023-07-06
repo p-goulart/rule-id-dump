@@ -1,4 +1,5 @@
-import xml.etree.ElementTree as XMLTree
+#import xml.etree.ElementTree as XMLTree
+from lxml import etree as XMLTree
 from os import path
 from elements import Rule, RuleGroup, Category
 
