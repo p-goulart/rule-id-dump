@@ -44,7 +44,7 @@ class Element:
     @property
     def sub_id(self):
         if self.xml_node.tag == "rule":
-            if self.xml_node.getparent().tag == "rulegroup":
+            if self.xml_node.getparent() is not None and self.xml_node.getparent().tag == "rulegroup":
                 return str(len(self.xml_node.xpath("preceding-sibling::rule")) + 1)
             else:
                 return "1"
