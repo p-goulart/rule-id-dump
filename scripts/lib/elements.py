@@ -1,4 +1,4 @@
-import xml.etree.ElementTree as XMLTree
+from lxml import etree
 from typing import List
 
 
@@ -16,7 +16,7 @@ class ToneTag:
 
 class Element:
     # Construct instance with XML node only.
-    def __init__(self, xml_node: XMLTree, parent_attrib=None):
+    def __init__(self, xml_node: etree, parent_attrib=None):
         if parent_attrib is None:
             parent_attrib = {}
         self.xml_node = xml_node
@@ -42,6 +42,14 @@ class Element:
             return None
 
     @property
+    def sub_id(self):
+        if self.xml_node.tag == "rule":
+            if self.xml_node.getparent() is not None and self.xml_node.getparent().tag == "rulegroup":
+                return str(len(self.xml_node.xpath("preceding-sibling::rule")) + 1)
+            else:
+                return "1"
+
+    @property
     def is_goal_specific(self):
         try:
             return self.attrib['is_goal_specific']
@@ -64,15 +72,15 @@ class Element:
 
 
 class Category(Element):
-    def __init__(self, xml_node: XMLTree, parent_attrib=None):
+    def __init__(self, xml_node: etree, parent_attrib=None):
         super().__init__(xml_node, parent_attrib)
 
 
 class RuleGroup(Element):
-    def __init__(self, xml_node: XMLTree, parent_attrib=None):
+    def __init__(self, xml_node: etree, parent_attrib=None):
         super().__init__(xml_node, parent_attrib)
 
 
 class Rule(Element):
-    def __init__(self, xml_node: XMLTree, parent_attrib=None):
+    def __init__(self, xml_node: etree, parent_attrib=None):
         super().__init__(xml_node, parent_attrib)

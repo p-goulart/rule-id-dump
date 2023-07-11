@@ -1,5 +1,5 @@
 from scripts.lib.elements import Rule, RuleGroup
-import xml.etree.ElementTree as XMLTree
+from lxml import etree
 import unittest
 from tests.mock import mock_rule
 
@@ -17,7 +17,7 @@ class TestRule(unittest.TestCase):
 
     def test_rule_from_rulegroup(self):
         xml_str = '<rulegroup id="foo"><rule name="bar"/><rule id="pub"/></rulegroup>'
-        rulegroup = RuleGroup(XMLTree.fromstring(xml_str), {'xyz': 'abc'})
+        rulegroup = RuleGroup(etree.fromstring(xml_str), {'xyz': 'abc'})
         rules = rulegroup.rules
         self.assertEquals(len(rules), 2)
         self.assertEquals(rules[0].id, 'foo')
