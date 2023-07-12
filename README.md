@@ -113,6 +113,7 @@ row,id,locale,source_repo,type,source_file,tone_tags,is_goal_specific
 |---|---|
 |row|row number, not unique or stable, please don't use this for anything programmatic|
 |id|rule ID – if the rule is a sub-rule of a rulegroup, the ID will be that of the rulegroup|
+|subId| sub rule ID – index of a (sub-)rule. The subId of a standalone rule is always `[1]`|
 |source_repo|'os' or 'premium'|
 |type|'grammar', 'style', or 'unknown'|
 |source_file|the path to the file where this rule comes from|
