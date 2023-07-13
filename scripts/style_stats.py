@@ -4,6 +4,7 @@ from lib.logger import logger_wrapper
 from lib.rule_dump import RuleDump
 from lib.constants import *
 from pandas import DataFrame
+import pandas as pd
 import collections
 
 
@@ -30,6 +31,12 @@ def rows_from_rule(rule, repo_name, row_list):
             'untagged',
             repo_name
         ])
+        return
+    row_list.append([
+        rule.id,
+        'tagged',
+        repo_name
+    ])
     for tt in rule.tone_tags:
         row_list.append([
             rule.id,
@@ -71,12 +78,27 @@ def __main__():
             df_from_repo(cli.args.from_dir, repo_dir, repo_name, locale, rows_from)
         df_to = DataFrame(rows_to, columns=headers)
         df_from = DataFrame(rows_from, columns=headers)
-        summary = df_to.groupby(by='repo')['tone_tags'].value_counts().to_string()
+
+        repo_grps = df_to.groupby(by='repo')
+        summary = repo_grps['tone_tags'].value_counts()
+
         logger.debug(summary)
-        open(summary_filepath, 'w').write(summary)
+        open(summary_filepath, 'w').write(summary.to_string())
         comparison = compare_dfs(df_to, df_from)
         logger.debug(comparison)
         open(added_filepath, 'w').write(comparison)
+
+        summary = summary.to_frame().rename(columns={'tone_tags': 'count'}).reset_index()
+
+        unique_rules = repo_grps['id'].nunique()
+        unique_rules = unique_rules.to_frame().reset_index()
+        unique_rules = unique_rules.rename(columns={'id': 'count'})
+        unique_rules["tone_tags"] = "unique_rules"
+        test_filepath = os.path.join(locale_dir, 'test_summary.txt')
+        test_summary = pd.concat([summary, unique_rules], axis=0).sort_values('repo')
+        test_summary.groupby(by='repo')
+        #the default index still needs to be dropped, maybe switching to *to_csv*? (has index=False)
+        open(test_filepath, 'w').write(test_summary.to_string())
 
 
 __main__()
