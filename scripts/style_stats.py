@@ -97,7 +97,7 @@ def __main__():
         test_filepath = os.path.join(locale_dir, 'test_summary.txt')
         test_summary = pd.concat([summary, unique_rules], axis=0).sort_values('repo')
         test_summary.groupby(by='repo')
-        #the default index still needs to be dropped, maybe switching to *to_csv*? (has index=False)
+        # the default index still needs to be dropped, maybe switching to *to_csv*? (has index=False)
         open(test_filepath, 'w').write(test_summary.to_string())
 
 
