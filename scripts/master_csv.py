@@ -34,7 +34,7 @@ def __main__():
     logger = logger_wrapper(cli.parser.prog, cli.args.verbosity)
     logger.debug(f"Starting script...\nInvoked with options: {cli.args}")
     out_path = path.join(cli.args.out_dir, 'all_rules.csv')
-    headers = ['id', 'subId', 'locale', 'source_repo', 'type', 'source_file', 'tone_tags', 'writing_goal',
+    headers = ['id', 'subId', 'locale', 'source_repo', 'type', 'source_file', 'tone_tags', 'writing_goals',
                'is_goal_specific']
     rows = []
     for locale in LOCALES:
