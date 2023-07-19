@@ -1,9 +1,13 @@
 from os import path
 from lxml import etree
 from elements import Rule, RuleGroup, Category
+import re
 
 
 class RuleFile:
+    # Used to remove entities from XML strings, as they're not needed
+    entity_pattern = r"&\w+;"
+
     # Constructor takes as param only filepath, and derives from it a parsed XML tree
     # and a list of Rule instances.
     def __init__(self, filepath: str, rules_path: str):
@@ -13,7 +17,15 @@ class RuleFile:
 
     # Parse XML from path, return parsed element tree.
     def parse_xml(self):
-        return etree.parse(self.filepath)
+        # No need to resolve them or load external files.
+        parser = etree.XMLParser(load_dtd=False, resolve_entities=False)
+        return etree.fromstring(self.xml_string, parser=parser)
+
+    # Clean up XML string from filepath; namely, we just need to remove entities as those can't be resolved properly,
+    # and they'd just slow everything down anyway.
+    @property
+    def xml_string(self):
+        return re.sub(self.entity_pattern, 'REPLACED_ENTITY', open(self.filepath).read()).encode('utf-8')
 
     @property
     def name(self):
