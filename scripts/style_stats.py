@@ -67,7 +67,7 @@ def summarize_tts(df):
     total_tts = pd.DataFrame()
     try:
         total_tts = repo_grps.apply(lambda x: x[(x['tone_tags'] != 'tagged') & (x[
-                'tone_tags'] != 'untagged')]['tone_tags'].count()).reset_index(name='count')
+            'tone_tags'] != 'untagged')]['tone_tags'].count()).reset_index(name='count')
         total_tts["tone_tags"] = "total"
     except TypeError:
         print("TypeError: DataFrame.reset_index() got an unexpected keyword argument 'name'")
