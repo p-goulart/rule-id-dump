@@ -60,7 +60,7 @@ def compare_dfs(df_to, df_from):
     return "\n".join([f"{key},{value}" for key, value in coll_to.items()])
 
 
-def summarize_tts(df):
+def summarize_tts(df, logger):
     repo_grps = df.groupby(by='repo')
     summary = repo_grps['tone_tags'].value_counts().reset_index(name='count')
 
@@ -69,7 +69,7 @@ def summarize_tts(df):
             'tone_tags'] != 'untagged')]['tone_tags'].count()).reset_index(name='count')
         total_tts["tone_tags"] = "total"
     except TypeError as e:
-        print(e)
+        logger.warning(e.__str__() + "\n*total* is set to 0 for all repos")
         total_tts = pd.DataFrame([['os', 'total', 0], ['premium', 'total', 0]], columns=['repo', 'tone_tags', 'count'])
 
     unique_rules = repo_grps['id'].nunique().to_frame().reset_index()
@@ -100,7 +100,7 @@ def __main__():
         all_rows_to.extend(rows_to)
         df_to = DataFrame(rows_to, columns=headers)
         df_from = DataFrame(rows_from, columns=headers)
-        locale_summary = summarize_tts(df_to)
+        locale_summary = summarize_tts(df_to, logger)
 
         logger.debug(locale_summary)
         open(summary_filepath, 'w').write(locale_summary.to_string(index=False))
@@ -110,7 +110,7 @@ def __main__():
 
     df_all_to = DataFrame(all_rows_to, columns=headers)
 
-    all_summary = summarize_tts(df_all_to)
+    all_summary = summarize_tts(df_all_to, logger)
     all_filepath = os.path.join(cli.args.out_dir, 'all_time_summary.txt')
     open(all_filepath, 'w').write(all_summary.to_string(index=False))
 
