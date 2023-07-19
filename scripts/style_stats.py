@@ -60,11 +60,32 @@ def compare_dfs(df_to, df_from):
     return "\n".join([f"{key},{value}" for key, value in coll_to.items()])
 
 
+def summarize_tts(df):
+    repo_grps = df.groupby(by='repo')
+    summary = repo_grps['tone_tags'].value_counts().reset_index(name='count')
+
+    total_tts = pd.DataFrame()
+    try:
+        total_tts = repo_grps.apply(lambda x: x[(x['tone_tags'] != 'tagged') & (x[
+                'tone_tags'] != 'untagged')]['tone_tags'].count()).reset_index(name='count')
+        total_tts["tone_tags"] = "total"
+    except TypeError:
+        print("TypeError: DataFrame.reset_index() got an unexpected keyword argument 'name'")
+
+    unique_rules = repo_grps['id'].nunique().to_frame().reset_index()
+    unique_rules = unique_rules.rename(columns={'id': 'count'})
+    unique_rules["tone_tags"] = "unique_rules"
+
+    summary = pd.concat([summary, total_tts, unique_rules], axis=0).sort_values(['repo', 'tone_tags'])
+    return summary
+
+
 def __main__():
     cli = CLI()
     logger = logger_wrapper(cli.parser.prog, cli.args.verbosity)
     logger.debug(f"Starting script...\nInvoked with options: {cli.args}")
     headers = ['id', 'tone_tags', 'repo']
+    all_rows_to = []
     for locale in LOCALES:
         locale_dir = os.path.join(cli.args.out_dir, locale)
         os.makedirs(locale_dir, exist_ok=True)
@@ -76,29 +97,22 @@ def __main__():
         for repo_name, repo_dir in REPOS.items():
             df_from_repo(cli.args.to_dir, repo_dir, repo_name, locale, rows_to)
             df_from_repo(cli.args.from_dir, repo_dir, repo_name, locale, rows_from)
+        all_rows_to.extend(rows_to)
         df_to = DataFrame(rows_to, columns=headers)
         df_from = DataFrame(rows_from, columns=headers)
+        locale_summary = summarize_tts(df_to)
 
-        repo_grps = df_to.groupby(by='repo')
-        summary = repo_grps['tone_tags'].value_counts()
-
-        logger.debug(summary)
-        open(summary_filepath, 'w').write(summary.to_string())
+        logger.debug(locale_summary)
+        open(summary_filepath, 'w').write(locale_summary.to_string(index=False))
         comparison = compare_dfs(df_to, df_from)
         logger.debug(comparison)
         open(added_filepath, 'w').write(comparison)
 
-        summary = summary.to_frame().rename(columns={'tone_tags': 'count'}).reset_index()
+    df_all_to = DataFrame(all_rows_to, columns=headers)
 
-        unique_rules = repo_grps['id'].nunique()
-        unique_rules = unique_rules.to_frame().reset_index()
-        unique_rules = unique_rules.rename(columns={'id': 'count'})
-        unique_rules["tone_tags"] = "unique_rules"
-        test_filepath = os.path.join(locale_dir, 'test_summary.txt')
-        test_summary = pd.concat([summary, unique_rules], axis=0).sort_values('repo')
-        test_summary.groupby(by='repo')
-        # the default index still needs to be dropped, maybe switching to *to_csv*? (has index=False)
-        open(test_filepath, 'w').write(test_summary.to_string())
+    all_summary = summarize_tts(df_all_to)
+    all_filepath = os.path.join(cli.args.out_dir, 'all_time_summary.txt')
+    open(all_filepath, 'w').write(all_summary.to_string(index=False))
 
 
 __main__()
