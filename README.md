@@ -100,11 +100,11 @@ ABSAGE_SUBST
 This script is meant to provide an all-encompassing view of **all** rules created by the lingu team in **one single file** – this means *all locales* are present in the same file. For example:
 
 ```csv
-row,id,locale,source_repo,type,source_file,tone_tags,is_goal_specific
-0,IN_SHANGHAI,en,os,grammar,grammar.xml,,false
-1,IN_SHANGHAI,en,os,grammar,grammar.xml,,false
-2,LOWERCASE_NAMES,fr,premium,grammar,grammar.xml,,false
-3,SOME_EXAMPLE,es,os,style,grammar.xml,professional,true
+row,id,subId,locale,source_repo,type,source_file,tone_tags,writing_goals,is_goal_specific
+0,IN_SHANGHAI,1,en,os,grammar,grammar.xml,,,false
+1,IN_SHANGHAI,2,en,os,grammar,grammar.xml,,,false
+2,LOWERCASE_NAMES,1,fr,premium,grammar,grammar.xml,,,false
+3,SOME_EXAMPLE,1,es,os,style,grammar.xml,professional,serious,true
 ```
 
 #### Table headers
@@ -118,6 +118,7 @@ row,id,locale,source_repo,type,source_file,tone_tags,is_goal_specific
 |type|'grammar', 'style', or 'unknown'|
 |source_file|the path to the file where this rule comes from|
 |tone_tags|comma-separated list of `tone_tags` applied to the the rule, including those inherited from rulegroups and categories|
+|writing_goals|comma-separate list of writing goals served by the tone tags in the previous column|
 |is_goal_specific|boolean value of `is_goal_specific` rule attribute|
 
 

@@ -4,6 +4,7 @@ from lib.constants import *
 from lib.logger import logger_wrapper
 import os
 from pandas import DataFrame
+from lib.writing_goals import WritingGoal
 
 
 class CLI:
@@ -26,13 +27,15 @@ class CLI:
 # type (grammar, style, unknown)
 # source file
 # tone_tags
+# writing goals
 # is_goal_specific
 def __main__():
     cli = CLI()
     logger = logger_wrapper(cli.parser.prog, cli.args.verbosity)
     logger.debug(f"Starting script...\nInvoked with options: {cli.args}")
     out_path = path.join(cli.args.out_dir, 'all_rules.csv')
-    headers = ['id', 'subId', 'locale', 'source_repo', 'type', 'source_file', 'tone_tags', 'is_goal_specific']
+    headers = ['id', 'subId', 'locale', 'source_repo', 'type', 'source_file', 'tone_tags', 'writing_goals',
+               'is_goal_specific']
     rows = []
     for locale in LOCALES:
         for repo_name, repo_dir in REPOS.items():
@@ -43,6 +46,7 @@ def __main__():
                     rows.append([
                         rule.id, rule.sub_id, locale, repo_name, file.type, file.rel_path,
                         ','.join([tt.tag for tt in rule.tone_tags]),
+                        ','.join(WritingGoal.list_from_tags(rule.tone_tags)),
                         rule.is_goal_specific
                     ])
     df = DataFrame(rows, columns=headers)

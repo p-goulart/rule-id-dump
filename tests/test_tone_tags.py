@@ -1,6 +1,7 @@
 import unittest
 from tests.mock import mock_rule
 from scripts.lib.elements import ToneTag
+from scripts.lib.writing_goals import WritingGoal
 
 
 class TestToneTags(unittest.TestCase):
@@ -25,6 +26,10 @@ class TestToneTags(unittest.TestCase):
         rule = mock_rule('<rule id="foo" tone_tags="formal"/>',
                          {'tone_tags': 'formal'})
         self.assertEquals(len(rule.tone_tags), 1)
+
+    def test_writing_goal(self):
+        self.assertEquals(len(WritingGoal.list_from_tags([ToneTag('clarity')])), 5)
+        self.assertEquals(len(WritingGoal.list_from_tags([ToneTag('formal'), ToneTag('informal')])), 3)
 
 
 if __name__ == '__main__':
