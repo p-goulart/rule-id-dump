@@ -124,65 +124,116 @@ row,id,subId,locale,source_repo,type,source_file,tone_tags,writing_goals,is_goal
 
 ### `style_stats`
 
-This script generates **two** artefacts.
+This script generates **two** types of artefacts.
 
-The `all_time_summary.txt` file contains a count of the **latest** (per `master` branch) rule counts **per `tone_tag`**, e.g.:
+The `all_time_summary.txt` files contain a count of the **latest** (per `master` branch) rule counts **per `tone_tag`** (or `writing_goal`).
 
-```
-repo     tone_tags   
-os       formal          602
-         clarity         289
-         untagged        184
-         objective        68
-         academic         60
-         professional     13
-         povrem            8
-         informal          4
-         positive          3
-         general           2
-premium  formal           49
-         confident        23
-         professional     23
-         positive          5
-         objective         2
-         clarity           1
-```
+For each report we also have a few special categories:
 
-The `added_this_quarter.txt` file provides us with the tone_tag differential for **the current quarter**. Each positive value means we can count more rules for that tone tag now than at the beginning of the quarter, and a negative value means that we can count fewer (i.e. rules have been deleted or re-tagged).
+* `tagged` refers to all tagged rules;
+* `untagged` refers to... you guessed it... all **untagged** rules 🥴
+* `unique_rules` refers to the actual number of rules – since rules may contain multiple different tags, the sum in `total` could be misleading.
 
-For example, the following data tells us that we have 'lost' 11 `clarity` rules and 'gained' 5 `professional` ones:
+Here's an example for **tone tags** counted for a single language:
 
 ```
-clarity,-11
-formal,5
-general,1
+   repo writing_goals  count
+     os     confident    147
+     os    expressive    140
+     os     objective    214
+     os      personal   1063
+     os       serious    220
+     os        tagged   1144
+     os         total   1784
+     os  unique_rules   1006
+     os      untagged    416
+premium     confident     99
+premium    expressive     91
+premium     objective    179
+premium      personal     91
+premium       serious    197
+premium        tagged    214
+premium         total    657
+premium  unique_rules    175
+```
+
+The `added_this_quarter.txt` files provide us with the differential for **the current quarter**. Each positive value means we can count more rules for that tone tag/writing goal now than at the beginning of the quarter, and a negative value means that we can count fewer (i.e. rules have been deleted or re-tagged).
+
+For example, the following data (per writing goal) tells us that we have 'lost' 11 `personal` rules and 'gained' 60 `objective` ones:
+
+```
+tagged,94
+serious,87
+objective,60
+confident,0
+personal,-5
+expressive,-6
 untagged,0
-confident,-1
-informal,0
-academic,0
-professional,5
-persuasive,4
 ```
 
 #### Artefact structure
 
+We generate each artefact for each **locale** (as well as a combined total of all locales) and for either writing goal or tone tag.
+
 ```
+.
+├── all
+│   ├── tone_tags
+│   │   └── all_time_summary.txt
+│   └── writing_goals
+│       └── all_time_summary.txt
 ├── de
 │   ├── added_this_quarter.txt
-│   └── all_time_summary.txt
+│   ├── all_time_summary.txt
+│   ├── tone_tags
+│   │   ├── added_this_quarter.txt
+│   │   └── all_time_summary.txt
+│   └── writing_goals
+│       ├── added_this_quarter.txt
+│       └── all_time_summary.txt
 ├── en
 │   ├── added_this_quarter.txt
-│   └── all_time_summary.txt
+│   ├── all_time_summary.txt
+│   ├── tone_tags
+│   │   ├── added_this_quarter.txt
+│   │   └── all_time_summary.txt
+│   └── writing_goals
+│       ├── added_this_quarter.txt
+│       └── all_time_summary.txt
 ├── es
 │   ├── added_this_quarter.txt
-│   └── all_time_summary.txt
+│   ├── all_time_summary.txt
+│   ├── tone_tags
+│   │   ├── added_this_quarter.txt
+│   │   └── all_time_summary.txt
+│   └── writing_goals
+│       ├── added_this_quarter.txt
+│       └── all_time_summary.txt
 ├── fr
 │   ├── added_this_quarter.txt
-│   └── all_time_summary.txt
+│   ├── all_time_summary.txt
+│   ├── tone_tags
+│   │   ├── added_this_quarter.txt
+│   │   └── all_time_summary.txt
+│   └── writing_goals
+│       ├── added_this_quarter.txt
+│       └── all_time_summary.txt
 ├── nl
 │   ├── added_this_quarter.txt
-│   └── all_time_summary.txt
+│   ├── all_time_summary.txt
+│   ├── tone_tags
+│   │   ├── added_this_quarter.txt
+│   │   └── all_time_summary.txt
+│   └── writing_goals
+│       ├── added_this_quarter.txt
+│       └── all_time_summary.txt
 └── pt
     ├── added_this_quarter.txt
-    └── all_time_summary.txt
+    ├── all_time_summary.txt
+    ├── tone_tags
+    │   ├── added_this_quarter.txt
+    │   └── all_time_summary.txt
+    └── writing_goals
+        ├── added_this_quarter.txt
+        └── all_time_summary.txt
 ```
