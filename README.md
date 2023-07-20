@@ -137,24 +137,27 @@ For each report we also have a few special categories:
 Here's an example for **tone tags** counted for a single language:
 
 ```
-   repo writing_goals  count
-     os     confident    147
-     os    expressive    140
-     os     objective    214
-     os      personal   1063
-     os       serious    220
-     os        tagged   1144
-     os         total   1784
-     os  unique_rules   1006
-     os      untagged    416
-premium     confident     99
-premium    expressive     91
-premium     objective    179
-premium      personal     91
-premium       serious    197
-premium        tagged    214
-premium         total    657
-premium  unique_rules    175
+   repo    tone_tags  count
+     os     academic      1
+     os      clarity    137
+     os    confident      7
+     os       formal     73
+     os      general      3
+     os     informal    923
+     os       tagged   1144
+     os        total   1144
+     os unique_rules   1006
+     os     untagged    416
+premium     academic     12
+premium      clarity     85
+premium    confident      3
+premium       formal     76
+premium      general      6
+premium   persuasive      5
+premium professional     27
+premium       tagged    214
+premium        total    214
+premium unique_rules    175
 ```
 
 The `added_this_quarter.txt` files provide us with the differential for **the current quarter**. Each positive value means we can count more rules for that tone tag/writing goal now than at the beginning of the quarter, and a negative value means that we can count fewer (i.e. rules have been deleted or re-tagged).
