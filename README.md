@@ -162,7 +162,7 @@ premium unique_rules    175
 
 The `added_this_quarter.txt` files provide us with the differential for **the current quarter**. Each positive value means we can count more rules for that tone tag/writing goal now than at the beginning of the quarter, and a negative value means that we can count fewer (i.e. rules have been deleted or re-tagged).
 
-For example, the following data (per writing goal) tells us that we have 'lost' 11 `personal` rules and 'gained' 60 `objective` ones:
+For example, the following data (per writing goal) tells us that we have 'lost' 5 `personal` rules and 'gained' 60 `objective` ones:
 
 ```
 tagged,94
