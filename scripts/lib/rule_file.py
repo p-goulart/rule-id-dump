@@ -25,7 +25,8 @@ class RuleFile:
     # and they'd just slow everything down anyway.
     @property
     def xml_string(self):
-        return re.sub(self.entity_pattern, 'REPLACED_ENTITY', open(self.filepath).read()).encode('utf-8')
+        return re.sub(
+            self.entity_pattern, 'REPLACED_ENTITY', open(self.filepath, encoding='utf-8').read()).encode('utf-8')
 
     @property
     def name(self):
