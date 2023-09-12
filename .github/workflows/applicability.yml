@@ -32,7 +32,7 @@ jobs:
 
       - name: Run cross language applicability script on latest data
         run: |
-          python ./scripts/cross_ling_appl.py --to-dir './repos-latest'
+          python ./scripts/cross_ling_appl.py --to-dir './repos-latest' --out-dir 'all_style_comments'
 
       - name: Upload comment artifacts
         uses: actions/upload-artifact@v3
