@@ -3,7 +3,7 @@ name: Cross Language Applicability
 on: push
 
 jobs:
-  compile-stats:
+  extract-comments:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,3 +33,9 @@ jobs:
       - name: Run cross language applicability script on latest data
         run: |
           python ./scripts/cross_ling_appl.py --to-dir './repos-latest'
+
+      - name: Upload comment artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: all_style_comments
+          path: all_style_comments/
