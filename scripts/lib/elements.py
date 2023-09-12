@@ -1,3 +1,4 @@
+import re
 from lxml import etree
 from typing import List
 
@@ -48,6 +49,8 @@ class Element:
                 return str(len(self.xml_node.xpath("preceding-sibling::rule")) + 1)
             else:
                 return "1"
+        else:
+            return "0"
 
     @property
     def is_goal_specific(self):
@@ -55,6 +58,13 @@ class Element:
             return self.attrib['is_goal_specific']
         except KeyError:
             return 'false'
+
+    @property
+    def comments(self):
+        if self.xml_node.tag in ["rule", "rulegroup"]:
+            regex = re.compile(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - [A-Z]+: [\s\S\n]*?-->')
+            comments = self.xml_node.xpath("./comment()[not(preceding-sibling::pattern)]")
+            return [Comment(c) for c in comments if re.fullmatch(regex, str(c))]
 
     # This is stupid, but whatever, it works.
     @staticmethod
@@ -84,3 +94,27 @@ class RuleGroup(Element):
 class Rule(Element):
     def __init__(self, xml_node: etree, parent_attrib=None):
         super().__init__(xml_node, parent_attrib)
+
+
+class Comment:
+    def __init__(self, comment_str):
+        self.comment = comment_str
+
+    def __str__(self):
+        return self.comment
+
+    @property
+    def author(self):
+        return re.search(r'<!-- ([A-Z]{2}).*', self.comment.__str__()).group(1)
+
+    @property
+    def date(self):
+        return re.search(r'<!-- [A-Z]{2}@(\d{4}-\d{2}-\d{2}) - [A-Z]+: [\s\S\n]*?-->', self.comment.__str__()).group(1)
+
+    @property
+    def tag(self):
+        return re.search(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - ([A-Z]+): [\s\S\n]*?-->', self.comment.__str__()).group(1)
+
+    @property
+    def content(self):
+        return re.search(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - [A-Z]+: ([\s\S\n]*?)-->', self.comment.__str__()).group(1)

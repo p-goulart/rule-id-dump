@@ -13,13 +13,13 @@ The start of the quarter is defined arbitrarily by tagging our repos with a tag 
 ## Scripts
 ### Summary
 
-|script|artefact name|artefact contents|
-|---|---|---|
-|dump_all|rule-dump-latest|a flat list of all current rule IDs|
-|compare|added-rules|a flat list of all rule IDs added **in the current quarter**|
-|master_csv|all_rules|a massive CSV containinng data for every single rule in every locale|
-|style_stats|style_stats|`all_time_summary.txt`: all currently `tone_tag`ged rules;`added_this_quarter.txt` changes in style rules as a differential in tone tag numbers|
-
+| script          | artefact name      | artefact contents                                                                                                                               |
+|-----------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| dump_all        | rule-dump-latest   | a flat list of all current rule IDs                                                                                                             |
+| compare         | added-rules        | a flat list of all rule IDs added **in the current quarter**                                                                                    |
+| master_csv      | all_rules          | a massive CSV containing data for every single rule in every locale                                                                             |
+| style_stats     | style_stats        | `all_time_summary.txt`: all currently `tone_tag`ged rules;`added_this_quarter.txt` changes in style rules as a differential in tone tag numbers |
+| cross_ling_appl | all_style_comments | `all_comments.csv`: all comments in all style XML files                                                                                         |
 ### `dump_all`
 
 This simple utility can serve as a sort of sanity test for the code here. All it does is print out a list of unique rule IDs from the **latest** XML files on the `master` branch of both the OS and premium repositories, e.g.:
@@ -240,3 +240,24 @@ We generate each artefact for each **locale** (as well as a combined total of al
         ├── added_this_quarter.txt
         └── all_time_summary.txt
 ```
+
+### `cross_ling_appl`
+This script generates a .csv containing all comments from all XML style files (OS and Premium; for all Premium Languages). 
+A comment must meet the following conditions in order to be extracted:
+- comment is child of rule element or rulegroup element
+- comment matches this regex: `<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - [A-Z]+: [\s\S\n]*?-->`
+
+#### Table headers
+
+| header    | description                                                                                                                                                                                                                                                           |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| locale    | language of the comment                                                                                                                                                                                                                                               |
+| file      | name of file that was used to extract the comment. `style.xml` means OS, `style-premium.xml` means Premium.                                                                                                                                                           |
+| rule_id   | the rule ID of a rule / rule group. The comment is descendant of `rule_id`.                                                                                                                                                                                           |
+| sub_id    | sub rule ID – index of a (sub-)rule. The sub_id of a standalone rule is always `[1]` and the sub_id of the rule group element is always `[0]`. The comment is child of `rule_id[sub_id]`.                                                                             |
+| tone_tags | comma-separated list of `tone_tags` applied to the the rule, including those inherited from rulegroups and categories                                                                                                                                                 |
+| tag       | a broad categorization of the comment in upper case letters. For example, 'DESC' means Description. See [comment guidelines](https://languagetooler.atlassian.net/wiki/spaces/DEV/pages/2151546926/Writing+Style+Rules+WIP#Adding-Comments-to-Style-Rules:) for more. |
+| content   | the actual comment                                                                                                                                                                                                                                                    |
+
+
+

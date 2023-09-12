@@ -64,6 +64,10 @@ jobs:
         run: |
           python ./scripts/style_stats.py --from-dir 'repos-quarter-start' --to-dir 'repos-latest' --out-dir 'style-stats'
 
+      - name: Run cross language applicability script on latest data
+        run: |
+          python ./scripts/cross_ling_appl.py --to-dir './repos-latest' --out-dir 'all_style_comments'
+
       - name: Archive dump artefacts
         uses: actions/upload-artifact@v3
         with:
@@ -87,3 +91,9 @@ jobs:
         with:
           name: style_stats
           path: style-stats/
+
+      - name: Archive style comments
+        uses: actions/upload-artifact@v3
+        with:
+          name: all_style_comments
+          path: all_style_comments/
