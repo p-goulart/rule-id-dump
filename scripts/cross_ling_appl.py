@@ -48,7 +48,8 @@ def __main__():
     all_path = path.join(cli.args.out_dir, 'all_comments.csv')
     # diff_path = path.join(cli.args.out_dir, 'diff_comments.csv')
     headers = ['locale', 'file', 'rule_id', 'sub_id', 'tone_tags', 'tag', 'content']
-    to_rows, from_rows = [], []
+    # to_rows, from_rows = [], []
+    to_rows = []
     for locale in LOCALES:
         for repo_name, repo_dir in REPOS.items():
             # from_repo_path = path.join(cli.args.from_dir, repo_dir)
