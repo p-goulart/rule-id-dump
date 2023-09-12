@@ -1,8 +1,6 @@
 name: XML Rule Statistics
 
-on:
-  schedule:
-    - cron: '0 3 * * *'
+on: push
 
 jobs:
   compile-stats:
