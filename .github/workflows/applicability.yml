@@ -1,0 +1,37 @@
+name: Cross Language Applicability
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  compile-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Set up Python 3.7"
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.7"
+
+      - name: 'Checkout LT OS repo'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetool-org/languagetool
+          path: repos-latest/languagetool
+          token: ${{ secrets.LT_OS_TOKEN }}
+
+      - name: 'Checkout LT Premium repo'
+        uses: actions/checkout@v3
+        with:
+          repository: languagetooler-gmbh/languagetool-premium-modules
+          path: repos-latest/languagetool-premium-modules
+          token: ${{ secrets.LT_PREMIUM_TOKEN }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run cross language applicability script on latest data
+        run: |
+          python ./scripts/cross_ling_appl.py --to-dir './repos-latest'
