@@ -26,7 +26,7 @@ def create_rows(dump_files, locale):
         for element in (file.rulegroups + file.rules):
             for comment in element.comments:
                 rows.append([
-                    locale, file.rel_path, element.id, element.sub_id,
+                    comment.date, locale, file.rel_path, element.id, element.sub_id,
                     ','.join([tt.tag for tt in element.tone_tags]),
                     comment.tag, comment.content
                 ])
@@ -47,7 +47,7 @@ def __main__():
     logger.debug(f"Starting script...\nInvoked with options: {cli.args}")
     all_path = path.join(cli.args.out_dir, 'all_comments.csv')
     # diff_path = path.join(cli.args.out_dir, 'diff_comments.csv')
-    headers = ['locale', 'file', 'rule_id', 'sub_id', 'tone_tags', 'tag', 'content']
+    headers = ['date', 'locale', 'file', 'rule_id', 'sub_id', 'tone_tags', 'tag', 'content']
     # to_rows, from_rows = [], []
     to_rows = []
     for locale in LOCALES:
@@ -58,7 +58,7 @@ def __main__():
             to_dump = RuleDump(to_repo_path, locale)
             to_rows += create_rows(to_dump.files, locale)
             # from_rows += create_rows(from_dump.files, locale)
-    df = DataFrame(to_rows, columns=headers).sort_values(['locale', 'rule_id', 'sub_id'])
+    df = DataFrame(to_rows, columns=headers).sort_values(['date', 'locale', 'rule_id', 'sub_id'])
     logger.info(df.describe())
     all_comments = open(all_path, 'w', encoding='utf-8')
     all_comments.write(df.to_csv(index=False, line_terminator="\n"))
