@@ -100,21 +100,15 @@ class Comment:
     def __init__(self, comment_str):
         self.comment = comment_str
 
+        parsed = self.parse_comment()
+        self.author = parsed.group('author')
+        self.date = parsed.group('date')
+        self.tag = parsed.group('tag')
+        self.content = parsed.group('content')
+
     def __str__(self):
         return self.comment
 
-    @property
-    def author(self):
-        return re.search(r'<!-- ([A-Z]{2}).*', self.comment.__str__()).group(1)
-
-    @property
-    def date(self):
-        return re.search(r'<!-- [A-Z]{2}@(\d{4}-\d{2}-\d{2}) - [A-Z]+: [\s\S\n]*?-->', self.comment.__str__()).group(1)
-
-    @property
-    def tag(self):
-        return re.search(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - ([A-Z]+): [\s\S\n]*?-->', self.comment.__str__()).group(1)
-
-    @property
-    def content(self):
-        return re.search(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - [A-Z]+: ([\s\S\n]*?)-->', self.comment.__str__()).group(1)
+    def parse_comment(self):
+        return re.search(r'<!-- (?P<author>\w+)@(?P<date>\d{4}-\d{2}-\d{2}) - (?P<tag>[A-Z]+):'
+                         r' (?P<content>[\s\S\n]*?)-->', self.comment.__str__())
