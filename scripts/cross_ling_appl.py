@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 from lib.rule_dump import RuleDump
 from lib.constants import *
 from lib.logger import logger_wrapper
@@ -26,7 +27,7 @@ def create_rows(dump_files, locale):
         for element in (file.rulegroups + file.rules):
             for comment in element.comments:
                 rows.append([
-                    comment.date, locale, file.rel_path, element.id, element.sub_id,
+                    datetime.strptime(comment.date, '%Y-%m-%d').date(), locale, file.rel_path, element.id, element.sub_id,
                     ','.join([tt.tag for tt in element.tone_tags]),
                     comment.tag, comment.content
                 ])
