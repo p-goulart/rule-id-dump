@@ -26,8 +26,8 @@ def create_rows(dump_files, locale):
     for file in dump_files:
         for element in (file.rulegroups + file.rules):
             for comment in element.comments:
-                regex = re.compile(r'\[derived from: [a-z]{2}]')
-                if comment.tag == "DESC" and not regex.search(comment.content):
+                derived_rule = re.compile(r'\[derived from: [a-z]{2}]')
+                if comment.tag == "DESC" and not derived_rule.search(comment.content):
                     rows.append([
                         datetime.strptime(comment.date, '%Y-%m-%d').date(),
                         locale, file.rel_path, element.id, element.sub_id,
