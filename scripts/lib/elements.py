@@ -1,6 +1,6 @@
-import re
 from lxml import etree
 from typing import List
+from constants import *
 
 
 class ToneTag:
@@ -62,9 +62,8 @@ class Element:
     @property
     def comments(self):
         if self.xml_node.tag in ["rule", "rulegroup"]:
-            regex = re.compile(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - [A-Z]+: [\s\S\n]*?-->')
             comments = self.xml_node.xpath("./comment()[not(preceding-sibling::pattern)]")
-            return [Comment(c) for c in comments if re.fullmatch(regex, str(c))]
+            return [Comment(c) for c in comments if re.fullmatch(COMMENT_REGEX, str(c))]
 
     # This is stupid, but whatever, it works.
     @staticmethod
@@ -100,21 +99,14 @@ class Comment:
     def __init__(self, comment_str):
         self.comment = comment_str
 
+        parsed = self.parse_comment()
+        self.author = parsed.group('author')
+        self.date = parsed.group('date')
+        self.tag = parsed.group('tag')
+        self.content = parsed.group('content')
+
     def __str__(self):
         return self.comment
 
-    @property
-    def author(self):
-        return re.search(r'<!-- ([A-Z]{2}).*', self.comment.__str__()).group(1)
-
-    @property
-    def date(self):
-        return re.search(r'<!-- [A-Z]{2}@(\d{4}-\d{2}-\d{2}) - [A-Z]+: [\s\S\n]*?-->', self.comment.__str__()).group(1)
-
-    @property
-    def tag(self):
-        return re.search(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - ([A-Z]+): [\s\S\n]*?-->', self.comment.__str__()).group(1)
-
-    @property
-    def content(self):
-        return re.search(r'<!-- [A-Z]{2}@\d{4}-\d{2}-\d{2} - [A-Z]+: ([\s\S\n]*?)-->', self.comment.__str__()).group(1)
+    def parse_comment(self):
+        return re.search(COMMENT_REGEX, self.comment.__str__())
