@@ -20,7 +20,7 @@ class TestComments(unittest.TestCase):
 
     def test_ignore_comments_wrong_pos(self):
         rule = mock_rule('<rule id="foo" tone_tags="professional formal">'
-                         '<!-- MB@2023-06-23 - DESC: Removes pov from sentence for academic papers -->'
+                         '<!-- Foo-Bar@2023-06-23 - DESC: Removes pov from sentence for academic papers -->'
                          '<antipattern>'
                          '<!-- MB@2023-07-03 - TODO: add antipatterns -->'
                          '</antipattern><pattern>'
