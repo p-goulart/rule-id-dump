@@ -14,5 +14,5 @@ WRITING_GOAL_MAPPING = {
     "expressive": ['clarity', 'general']
 }
 
-COMMENT_REGEX = re.compile(r'<!-- (?P<author>\w+)@(?P<date>\d{4}-\d{2}-\d{2}) - (?P<tag>[A-Z]+): '
+COMMENT_REGEX = re.compile(r'<!-- (?P<author>[\w-]+)@(?P<date>\d{4}-\d{2}-\d{2}) - (?P<tag>[A-Z]+): '
                            r'(?P<content>[\s\S\n]*?)-->')
